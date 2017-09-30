@@ -1,4 +1,4 @@
-```### splunk on GCP: deploy clustered splunk to GCP using terraform and ansible```
+### ```splunk on GCP: deploy clustered splunk to GCP using terraform and ansible```
 
 * basic deployment and will progress to include dynamic inventory collection, better tagging and extend to multi-site, multi-az & multi-region
 * my OS is MAC (El Capitan 10.11.6)
