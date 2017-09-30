@@ -39,4 +39,4 @@ I shall continue to develop this as and when (it is something I am also doing on
 * blue/green modelling
 * & more
 
-```please for fork, add your own logic (and improve mine!) and request pulls as I would certainly appreciate comments, feedback and improvements to this repo :-)```
+```please fork, add your own logic (and improve mine!) and request pulls as I would certainly appreciate comments, feedback and improvements to this repo :-)```
