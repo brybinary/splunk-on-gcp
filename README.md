@@ -9,6 +9,8 @@
 • terraform configured locally
 • an understanding of setting up your terraform & ansible env's
 
+### initial inspirations (for terraform)
+https://sevagh.github.io/post/gcp/
 
 ### TERRAFORM (commands used):
 `you can amend 'splunk.tf' and change name to suit your req's`
