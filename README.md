@@ -3,21 +3,21 @@
 * basic deployment and will progress to include dynamic inventory collection, better tagging and extend to multi-site, multi-az & multi-region
 * my OS is MAC (El Capitan 10.11.6)
 
-### pre-req's & assumptions
+### ```pre-req's & assumptions```
 * gcp account and json keyfile available
 * ansible configured locally
 * terraform configured locally
 * an understanding of setting up your terraform & ansible env's
 
-### initial inspirations (for terraform)
+### ```initial inspirations (for terraform)```
 https://sevagh.github.io/post/gcp/
 
-### splunk credentials
+### ```splunk credentials```
 * splunk user: admin
 * splunk user password: 5Imples
 * ansible-vault password: 5Imples (used to en|de/crypt vars) [although I have left vars unencrypted at this point]
 
-### TERRAFORM (commands used):
+### ```TERRAFORM (commands used):```
 `you can amend 'splunk.tf' and change name to suit your req's`
 
 `you can amend variables.tf - e.g. region, account_file, zone, tags etc (I used the tags to effectively target the ansible builds [probably not pretty and I will look to streamline that with better dynamic inventory creation])`
@@ -25,11 +25,11 @@ https://sevagh.github.io/post/gcp/
 * terraform apply
 * terraform destroy
 
-### ANSIBLE (commands used):
+### ```ANSIBLE (commands used):```
 * ansible-playbook splunk-gcp-build-all.yml
 * ansible-playbook splunk-remove-all.yml
 
-## Updates & Further works.
+## ```Updates & Further works```
 I shall continue to develop this as and when (it is something I am also doing on the day job, so am hoping fairly regular updates).
 * dynamic inventory
 * multi-everything
