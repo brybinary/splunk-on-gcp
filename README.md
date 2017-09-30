@@ -13,9 +13,9 @@
 https://sevagh.github.io/post/gcp/
 
 ### splunk credentials
-splunk user: admin
-splunk user password: 5Imples
-ansible-vault password: 5Imples (used to en|de/crypt vars) [although I have left vars unencrypted at this point]
+* splunk user: admin
+* splunk user password: 5Imples
+* ansible-vault password: 5Imples (used to en|de/crypt vars) [although I have left vars unencrypted at this point]
 
 ### TERRAFORM (commands used):
 `you can amend 'splunk.tf' and change name to suit your req's`
