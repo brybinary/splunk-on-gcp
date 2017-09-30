@@ -1,0 +1,12 @@
+---
+
+- name: add stanza to target shc deployer
+  blockinfile:
+    dest: /opt/splunk/etc/system/local/server.conf
+    block: | 
+        [shclustering]
+        pass4SymmKey = {{ pass4 }}
+        shcluster_label = labshcluster1
+
+- name: restart splunkd
+  command: runuser -l splunk -c "/opt/splunk/bin/splunk restart"

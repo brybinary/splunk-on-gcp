@@ -1,0 +1,7 @@
+---
+
+- name: configure license slave
+  command: runuser -l splunk -c "/opt/splunk/bin/splunk edit licenser-localslave -master_uri https://10.91.0.111:8089 -auth {{ user }}:{{ password }}"
+
+- name: restart splunkd on license slave node
+  command: runuser -l splunk -c "/opt/splunk/bin/splunk restart"

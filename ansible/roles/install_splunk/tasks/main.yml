@@ -1,0 +1,56 @@
+---
+  - name: install splunk enterprise version 7.0.0
+    yum:
+      name={{ splunk_url }}
+      state=present
+
+  - name: check whether splunk has been setup
+    stat:
+      path=/opt/splunk/var/log/splunk/splunkd.log
+    register:
+      splunk_has_run
+
+  - name: start splunk and accept the license
+    command:
+      /opt/splunk/bin/splunk start --accept-license --answer-yes
+    when:
+      not splunk_has_run.stat.exists
+    become: yes
+    become_user: splunk
+
+  - name: stop splunk
+    command:
+      /opt/splunk/bin/splunk stop
+    when:
+      not splunk_has_run.stat.exists
+    become: yes
+    become_user: splunk
+
+  - name: change ownership of splunk dirs
+    file:
+      path=/opt/splunk
+      owner=splunk
+      group=splunk
+      recurse=yes
+    when:
+      not splunk_has_run.stat.exists
+
+  - name: enable boot start
+    command:
+      /opt/splunk/bin/splunk enable boot-start -user splunk
+    when:
+      not splunk_has_run.stat.exists
+
+  - name: edit user settings
+    command:
+      /opt/splunk/bin/splunk edit user {{ user }} -password "{{ password }}" -auth admin:changeme
+    when:
+      not splunk_has_run.stat.exists
+    become: yes
+    become_user: splunk
+
+  - name: start splunk
+    service:
+      name=splunk
+      enabled=yes
+      state=started

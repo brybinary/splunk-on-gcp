@@ -1,0 +1,23 @@
+---
+
+- name: remove splunk from auto boot
+  command: runuser -l splunk -c "/opt/splunk/bin/splunk disable boot-start -auth {{ user }}:{{ password }}"
+
+- name: stop splunk
+  command: runuser -l splunk -c "/opt/splunk/bin/splunk stop"
+  ignore_errors: true
+
+- name: kill all splunkd processes
+  command: "kill -9 `ps -ef | grep splunk | grep -v grep | awk '{print $2;}'`"
+
+- name: delete splunk dir
+  command: rm -rf /opt/splunk/
+
+- name: remove splunk via rpm (put your version here)
+  command: rpm -e splunk-6.5.1-f74036626f0c.x86_64
+
+- name: remove splunk user
+  command: userdel splunk
+
+- name: remove splunk group
+  command: groupdel splunk

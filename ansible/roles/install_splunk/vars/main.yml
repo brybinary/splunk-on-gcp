@@ -1,0 +1,4 @@
+---
+user: admin
+password: 5Imples
+splunk_url: "https://download.splunk.com/products/splunk/releases/7.0.0/splunk/linux/splunk-7.0.0-c8a78efdd40f-linux-2.6-x86_64.rpm"

@@ -1,0 +1,12 @@
+---
+
+- name: copy my dev license to splunk lab
+  template:
+      src="splunk.license"
+      dest="/opt/splunk/etc/licenses/"
+
+- name: add enterprise license and make licence master
+  command: runuser -l splunk -c "/opt/splunk/bin/splunk add licenses /opt/splunk/etc/licenses/splunk.license -auth {{ user }}:{{ password }}"
+
+- name: restart splunk on license master node
+  command: runuser -l splunk -c "/opt/splunk/bin/splunk restart"

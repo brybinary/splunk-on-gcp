@@ -1,0 +1,6 @@
+---
+
+- hosts: "all-splunk-nodes"
+  become: true
+  roles:
+    - lab_splunk_remove

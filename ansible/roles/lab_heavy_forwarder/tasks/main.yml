@@ -1,0 +1,40 @@
+---
+
+- name: enable heavy forwarder
+  command: runuser -l splunk -c "/opt/splunk/bin/splunk enable app SplunkForwarder -auth {{ user }}:{{ password }}"
+  register: cluster_heavy_forwarder_added
+
+- name: enable multiple receives on heavy forwarders
+  command: runuser -l splunk -c "/opt/splunk/bin/splunk enable listen 9997 -auth {{ user }}:{{ password }}"
+
+- name: enable heavy forwarder receive port 5140
+  command: runuser -l splunk -c "/opt/splunk/bin/splunk enable listen 5140 -auth {{ user }}:{{ password }}"
+
+- name: add tls1dot2 to server dot conf
+  lineinfile: >
+     dest=/opt/splunk/etc/system/local/server.conf
+     line="sslVersions = tls1.2"
+     insertafter="^#?sslKeysfilePassword"
+
+- name: add indexer discovery stanza prep
+  blockinfile:
+     dest: /opt/splunk/etc/system/local/outputs.conf
+     create: yes
+     block: | 
+        [indexer_discovery:master1]
+        pass4SymmKey = {{ pass4 }}
+        master_uri = https://10.132.0.4:8089
+        [tcpout:group1]
+        autoLBFrequency = 30
+        forceTimebasedAutoLB = true
+        indexerDiscovery = master1
+        useACK = true
+        [tcpout]
+        defaultGroup = default-autolb-group
+        [tcpout:default-autolb-group]
+        disabled = flse
+        server = 10.132.0.3:9997,10.132.0.2:9997,10.132.0.8:9997
+        sendCookedData = false
+
+- name: restart splunkd
+  command: runuser -l splunk -c "/opt/splunk/bin/splunk restart"

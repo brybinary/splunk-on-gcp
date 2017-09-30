@@ -1,0 +1,20 @@
+---
+
+- name: add peer to cluster as slave
+  command: runuser -l splunk -c "/opt/splunk/bin/splunk edit cluster-config -mode slave -site site1 -master_uri https://10.132.0.4:8089 -replication_port 9887 -auth {{ user }}:{{ password }}"
+  register: cluster_peer_added
+
+- name: enable 9997 listener for indexer discovery prep
+  command: runuser -l splunk -c "/opt/splunk/bin/splunk enable listen 9997 -auth {{ user }}:{{ password }}"
+
+- name: restart peer node
+  command: runuser -l splunk -c "/opt/splunk/bin/splunk restart"
+
+- name: create parent path for added indexes
+  file: path=/opt/splunk/var/lib/splunk/labindexes state=directory owner=splunk group=splunk mode=0700
+
+- name: create child path for added indexes
+  file: path=/opt/splunk/var/lib/splunk/labindexes/{{item.0}}/{{item.1}} state=directory owner=splunk group=splunk mode=0700 recurse=yes
+  with_nested:
+    - ['testindex1','testindex2','testindex3','testindex4']
+    - ['db','colddb','thaweddb']

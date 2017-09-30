@@ -1,0 +1,4 @@
+---
+
+- name: apply index cluster bundle
+  command: runuser -l splunk -c "/opt/splunk/bin/splunk apply cluster-bundle --answer-yes -auth {{ user }}:{{ password }}"

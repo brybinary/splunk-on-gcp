@@ -1,0 +1,7 @@
+---
+
+- name: initialize shclustering on members
+  command: runuser -l splunk -c "/opt/splunk/bin/splunk init shcluster-config -auth {{ user }}:{{ password }} -mgmt_uri https://splunk-search-head-1:8089 -replication_port 34567 -replication_factor 3 -conf_deploy_fetch_url https://10.132.0.4:8089 -secret {{ secret }} -shcluster_label labshcluster1"
+
+- name: restart splunkd
+  command: runuser -l splunk -c "/opt/splunk/bin/splunk restart"

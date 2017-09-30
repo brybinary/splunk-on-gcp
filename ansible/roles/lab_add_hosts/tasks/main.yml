@@ -1,0 +1,17 @@
+---
+
+- name: update local hosts (pre-dns)
+  blockinfile:
+    dest: /etc/hosts
+    block: | 
+        10.132.0.4 splunk-cluster-master
+        10.132.0.3 splunk-index-slave-1
+        10.132.0.2 splunk-index-slave-2
+        10.132.0.8 splunk-index-slave-3
+        10.132.0.5 splunk-search-head-1
+        10.132.0.7 splunk-search-head-2
+        10.132.0.6 splunk-search-head-3
+        10.132.0.9 splunk-heavy-forwarder-1
+#        10.91.0.115 splunklabnode5
+#        10.91.0.116 splunklabnode6
+#        10.91.0.117 splunklabnode7

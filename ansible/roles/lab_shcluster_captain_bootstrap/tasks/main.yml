@@ -1,0 +1,4 @@
+---
+
+- name: captain bootstrap
+  command: runuser -l splunk -c "/opt/splunk/bin/splunk bootstrap shcluster-captain -servers_list 'https://splunk-search-head-1:8089,https://splunk-search-head-2:8089,https://splunk-search-head-3:8089' -auth {{ user }}:{{ password }}"

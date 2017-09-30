@@ -1,0 +1,61 @@
+---
+
+- hosts: "splunk-cluster-master"
+  become: true
+  roles:
+    - install_splunk
+    - lab_add_hosts
+    - lab_cluster_master
+    - lab_shcluster_deployer
+
+- hosts: "splunk-index-slave-1,splunk-index-slave-2,splunk-index-slave-3"
+  become: true
+  roles:
+    - install_splunk
+    - lab_add_hosts
+    - lab_cluster_idx_peers
+
+
+- hosts: "splunk-search-head-1"
+  become: true
+  roles:
+    - install_splunk
+    - lab_shcluster_member_1
+    - lab_add_hosts
+#    - lab_license_slave
+
+- hosts: "splunk-search-head-2"
+  become: true
+  roles:
+    - install_splunk
+    - lab_shcluster_member_2
+    - lab_add_hosts
+#    - lab_license_slave
+
+- hosts: "splunk-search-head-3"
+  become: true
+  roles:
+    - install_splunk
+    - lab_shcluster_member_3
+    - lab_add_hosts
+#    - lab_license_slave
+
+
+- hosts: "splunk-search-head-3"
+  become: true
+  roles:
+    - lab_shcluster_captain_bootstrap
+
+- hosts: "splunk-heavy-forwarder-1"
+  become: true
+  roles:
+    - install_splunk
+    - lab_add_hosts
+#    - lab_license_slave
+    - lab_heavy_forwarder
+
+
+- hosts: "splunk-cluster-master"
+  become: true
+  roles:
+    - lab_index_cluster_bundle

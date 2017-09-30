@@ -1,0 +1,53 @@
+---
+
+- name: check if clustering is enabled
+  command: runuser -l splunk -c "/opt/splunk/bin/splunk list cluster-peers -auth {{ user }}:{{ password }}"
+  register: cluster_master_clustering_enabled
+  ignore_errors: true
+
+- name: enable cluster master
+  command: runuser -l splunk -c "/opt/splunk/bin/splunk edit cluster-config -mode master -multisite true -available_sites site1 -site site1 -site_replication_factor origin:2,total:3 -site_search_factor origin:2,total:3 -cluster_label lab_cluster_1 -auth {{ user }}:{{ password }}"
+  when: cluster_master_clustering_enabled|failed
+  register: cluster_master_configure
+
+- name: add indexer_discovery stanza - prep
+  blockinfile:
+    dest: /opt/splunk/etc/system/local/server.conf
+    block: | 
+        [indexer_discovery]
+        pass4SymmKey = {{ pass4 }}
+        indexerWeightByDiskCapacity = false
+
+- name: create indexes conf and add test indexes
+  blockinfile:
+    dest: /opt/splunk/etc/master-apps/_cluster/local/indexes.conf
+    create: yes
+    block: |
+        [testindex1]
+        repFactor=auto
+        homePath=/opt/splunk/var/lib/splunk/labindexes/testindex1/db/
+        coldPath=/opt/splunk/var/lib/splunk/labindexes/testindex1/colddb/
+        thawedPath=/opt/splunk/var/lib/splunk/labindexes/testindex1/thaweddb/
+
+        [testindex2]
+        repFactor=auto
+        homePath=/opt/splunk/var/lib/splunk/labindexes/testindex2/db/
+        coldPath=/opt/splunk/var/lib/splunk/labindexes/testindex2/colddb/
+        thawedPath=/opt/splunk/var/lib/splunk/labindexes/testindex2/thaweddb/
+
+        [testindex3]
+        repFactor=auto
+        homePath=/opt/splunk/var/lib/splunk/labindexes/testindex3/db/
+        coldPath=/opt/splunk/var/lib/splunk/labindexes/testindex3/colddb/
+        thawedPath=/opt/splunk/var/lib/splunk/labindexes/testindex3/thaweddb/
+
+        [testindex4]
+        repFactor=auto
+        homePath=/opt/splunk/var/lib/splunk/labindexes/testindex4/db/
+        coldPath=/opt/splunk/var/lib/splunk/labindexes/testindex4/colddb/
+        thawedPath=/opt/splunk/var/lib/splunk/labindexes/testindex4/thaweddb/
+
+
+- name: restart cluster master splunkd
+  command: runuser -l splunk -c "/opt/splunk/bin/splunk restart"
+  when: cluster_master_clustering_enabled|failed
